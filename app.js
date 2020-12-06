@@ -81,9 +81,9 @@ function initMLModel() {
   var video = getVideo();
   var context = getCanvas("outputVideo", true);
   bodyPix.load({
-    architechture: 'MobileNetV1',
+    architechture: 'ResNet50',
     outputStride: 16,
-    multiplier: 0.75,
+    multiplier: 1,
     quantBytes: 2
   }).then(model => {
     console.log('BodyPix model loaded.');
@@ -102,8 +102,8 @@ function transformFrame(model, sourceVideo, targetCanvasCtx) {
   var frame = tempCtx.getImageData(0, 0, w, h);
   model.segmentPerson(frame, {
     flipHorizontal: true,
-    internalResolution: 'high',
-    segmentationThreshold: 0.3,
+    internalResolution: 'low',
+    segmentationThreshold: 0.7,
     scoreThreshold: 0.3,
     maxDetections: 1,
     nmsRadius: 20
