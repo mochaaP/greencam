@@ -4,3 +4,14 @@ padding: 0;
 }
 #inputVideo {display: none}
 #bufferVideo {display: none}
+
+#outputVideo {
+  width: 100%;
+  position: absolute;
+  bottom: 0;
+}
+
+html {
+  height: 100%;
+  background: #00ff00
+}
