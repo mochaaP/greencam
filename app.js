@@ -75,7 +75,7 @@ function start() {
               return navigator.mediaDevices.getUserMedia({
                 ...videoConstraint,
                 ...{ video: {
-                  deviceId: devices[index].deviceId
+                  deviceId: devices[index + 1].deviceId // don't know why but the offset works
                   }
                 }
               }) // apply deviceId to original videoConstraint
