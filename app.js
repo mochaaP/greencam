@@ -61,6 +61,7 @@ function start() {
       }
     }
     navigator.mediaDevices.getUserMedia(videoConstraint) // this step is just for acquiring permission
+      .catch(console.error) // continues the chain
       .then(function (stream) {
         return navigator.mediaDevices.enumerateDevices()
           .then(function(devices) {
