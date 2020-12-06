@@ -52,7 +52,7 @@ function getCanvas(id, getCtx) {
 
 function start() {
   var video = getVideo();
-  if (navigator.mediaDevices.getUserMedia) {
+  if (navigator.mediaDevices.getUserMedia && navigator.mediaDevices.enumerateDevices) {
     var videoConstraint = {
       audio: false,
       video: {
@@ -60,7 +60,27 @@ function start() {
         height: { min: 360, ideal: 720, max: 1080 }
       }
     }
-    navigator.mediaDevices.getUserMedia(videoConstraint)
+    navigator.mediaDevices.getUserMedia(videoConstraint) // this step is just for acquiring permission
+      .then(function (stream) {
+        return navigator.mediaDevices.enumerateDevices()
+          .then(function(devices) {
+            const index = devices
+              .filter(x => (x.kind === "videoinput"))
+              .findIndex(camera => (camera.label === "OBS-Camera2")) // mutliplexing camera source 
+              // see https://obsproject.com/forum/resources/obs-virtualcam.949/
+            if (index === -1) { // OBS-VirtualCam not found
+              return stream // use original stream instead
+            } else {
+              return navigator.mediaDevices.getUserMedia({
+                ...videoConstraint,
+                ...{ video: {
+                  deviceId: devices[index].deviceId
+                  }
+                }
+              }) // apply deviceId to original videoConstraint
+            }
+          })
+      })
       .then(function (stream) {
         saveVideoSize(stream);
         resizeVideo(VIDEO_SIZE, ['input']);
