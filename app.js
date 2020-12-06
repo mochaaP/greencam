@@ -103,7 +103,7 @@ function transformFrame(model, sourceVideo, targetCanvasCtx) {
   model.segmentPerson(frame, {
     flipHorizontal: true,
     internalResolution: 'low',
-    segmentationThreshold: 0.7,
+    segmentationThreshold: 0.6,
     scoreThreshold: 0.3,
     maxDetections: 1,
     nmsRadius: 20
